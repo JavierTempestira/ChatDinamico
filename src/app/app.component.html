@@ -1,0 +1,71 @@
+<ng-template #profile>
+
+  <div [formGroup]="formUser" class="grid grid-rows-1 gap-2 w-full p-10">
+
+    <div class="flex w-full flex-col">
+      <label class="mb-2" for="">Id Usuario</label>
+      <input formControlName="id" class="w-full p-2 rounded-md border-2 border-slate-500" type="text">
+    </div>
+
+    <div class="flex w-full flex-col">
+      <label class="mb-2" for="">Nombre</label>
+      <input formControlName="name" class="w-full p-2 rounded-md border-2 border-slate-500" type="text">
+    </div>
+
+    <div class="flex w-full flex-col">
+      <label class="mb-2" for="">Imagen de perfil</label>
+      <input formControlName="profileImage" class="w-full p-2 rounded-md border-2 border-slate-500" type="text">
+    </div>
+
+    <p *ngIf="this.formUser.invalid && this.formUser.dirty" class="text-red-500">* Todos los campos son requeridos</p>
+    <button
+    (click)="saveProfile()"
+    class="bg-blue-500
+     text-white rounded-lg
+     p-2 transition-colors hover:bg-blue-700 active:bg-blue-900">Guardar</button>
+
+  </div> <!-- Formulario de usuario -->
+
+</ng-template>
+
+
+<ng-template #chat>
+  <div #chatContent id="chat-content" class="flex flex-col flex-grow overflow-auto p-4 space-y-6">
+
+    <message *ngFor="let messageItem of this.chatMessage$ | async"
+    [message]="messageItem.message"
+    [profileImage]="messageItem.profileImage"
+    [messageDate]="messageItem.date"
+    [messagePosition]="messageItem.userId === this.user?.id ? 'right' : 'left'"
+    ></message>
+
+
+
+  </div> <!-- Contenido Chat -->
+
+  <div class="bg-white py-2 px-4 shadow-inner">
+    <div class="flex">
+      <input [(ngModel)]="this.message" id="chat-input" class="flex-grow p-2 rounded-l-xl border-2 border-blue-500" placeholder="Escribe un mensaje..." type="text">
+      <button (click)="this.sendMessage()" class="bg-blue-500 text-white px-4 py-2 rounded-r-xl">Enviar</button>
+    </div>
+  </div> <!-- Input -->
+
+</ng-template>
+
+
+<div class="
+  l-container
+" >
+
+<div
+  class="w-full max-w-[500px] h-full bg-white my-10 rounded-lg shadow-2xl overflow-hidden flex flex-col"
+>
+
+<div class="bg-blue-500 text-white py-2 px-4 text-lg font-semibold">
+  Chat
+</div> <!-- Titulo -->
+
+<ng-container *ngTemplateOutlet="this.user === null ? profile : chat"></ng-container>
+
+</div>
+</div>
